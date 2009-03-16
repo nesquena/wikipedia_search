@@ -3,8 +3,8 @@ module CosineScoring
     
     def self.from_source(word, use_cloud)
       return from_file(word) unless use_cloud
-      from_db(word)
-      #Rails.cache.fetch("#{word}_term") { from_db(word) }
+      # from_db(word)
+      Rails.cache.fetch("#{word}_term") { from_db(word) }
     end
     
     def self.from_db(word)

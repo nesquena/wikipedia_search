@@ -80,11 +80,10 @@ module CosineScoring
       query_magnitude = 0.0
       dot_product = 0.0
       query_tfidf_hash.each do |word, tfidf|
-        document_magnitude += (document_tfidf_hash[word] * document_tfidf_hash[word])
-        query_magnitude += (query_tfidf_hash[word] * query_tfidf_hash[word])
+        # document_magnitude += (document_tfidf_hash[word] * document_tfidf_hash[word])
+        # query_magnitude += (query_tfidf_hash[word] * query_tfidf_hash[word])
         dot_product += (query_tfidf_hash[word] * document_tfidf_hash[word])
       end 
-      #Rails.logger.info(" #{dot_product} / Math.sqrt(#{document_magnitude} * #{query_magnitude})")
       dot_product # / (Math.sqrt(query_magnitude) * Math.sqrt(document_magnitude))
     end
   end
