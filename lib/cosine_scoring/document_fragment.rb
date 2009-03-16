@@ -15,11 +15,6 @@ module CosineScoring
     def initialize(docid, terms_list)
       @docid, @term_hash = docid, to_term_hash(terms_list)
     end
-
-    # { word => tc, word => tc }
-    def term_count_hash
-      @term_hash.values.inject({}) { |hash, term| hash[term.word] = term.count_in_document(@docid); hash }
-    end
     
     # returns an array of terms
     def terms
@@ -57,6 +52,13 @@ module CosineScoring
     # defines comparator for sorting documents
     def <=>(doc2)
       doc2.score_value <=> self.score_value
+    end
+    
+    protected 
+    
+    # { word => tc, word => tc }
+    def term_count_hash
+      @term_hash.values.inject({}) { |hash, term| hash[term.word] = term.count_in_document(@docid); hash }
     end
     
     # returns a term hash from the array
