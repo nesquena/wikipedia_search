@@ -2,22 +2,13 @@ module QueryHandler
   class Manager
     # Returns result information for a particular query using results from search_documents
     # Returns [Document, Document, Document] up to 10 results
-    def self.search_results(query_string, use_cloud)
-      documents, fetching_time, scoring_time, sort_time = search_documents(query_string, use_cloud)
-      results = documents[0...10].collect { |document| document.to_result }
-      return results, documents.size, fetching_time, scoring_time, sort_time
-    end
-
-    protected
-
-    # Performs a search based on a query, sorting documents by similarity score
-    # Returns [Document, Document, Document]
-    def self.search_documents(query_string, use_cloud)
+    def self.search_results(query_string, use_cloud, total_results=10)
       query_doc = DocumentFragment.from_query(query_string) 
       fetching_time = Profile.measure(:fetch) { @terms = posting_terms_for(query_doc, use_cloud) } 
-      score_time    = Profile.measure(:score) { @documents_array = collect_documents(@terms, query_doc) } 
-      sort_time     = Profile.measure(:sort)  { @documents_array.sort! }
-      return @documents_array, fetching_time, score_time, sort_time
+      score_time    = Profile.measure(:score) { @documents = collect_documents(@terms, query_doc) } 
+      sort_time     = Profile.measure(:sort)  { @documents.sort! }
+      results = @documents[0...10].collect { |document| document.to_result }
+      return results, @documents.size, fetching_time, score_time, sort_time
     end
 
     private
