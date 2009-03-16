@@ -1,0 +1,55 @@
+.result{
+	padding: 5px;
+	overflow: hidden;
+	margin: 0;
+	margin-bottom: 1px;
+}
+
+#query{
+	margin-left: 10px;
+	width: 350px;
+	vertical-align: middle;
+}
+
+.speedy {
+	margin-left: 160px;
+}
+
+#logo{
+	vertical-align: middle;	
+}
+
+#statistics{
+	text-align: right;
+	border-top: 1px solid blue;
+	background-color: #C1C6FF;
+	padding: 3px 10px 3px 0;
+	margin-bottom: 5px;
+	height: 20px;
+}
+
+#ajax-load img{
+	height: 32px;
+	width: 32px;
+}
+#ajax-load{
+	margin: auto;
+	text-align: center;
+}
+
+#footer{
+	background-color: #C1C6FF;
+	border-top: 1px solid blue;
+	height:20px;
+	margin-top: 20px;
+	padding: 3px 0 3px 10px;
+}
+
+.url{
+	font-size: 13px;
+	color: green;
+}
+
+body{
+	font-family: arial,sans-serif;
+}

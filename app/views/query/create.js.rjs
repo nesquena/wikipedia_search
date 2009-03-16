@@ -1,0 +1,2 @@
+page['statistics'].replace_html place_results_statistics(@results, @count, @query, @time_to_complete, @speedy, @fetching_time, @scoring_time, @sorting_time)
+page['results'].replace_html place_results(@results, @query)

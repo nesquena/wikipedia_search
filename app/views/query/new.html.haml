@@ -1,0 +1,15 @@
+- form_remote_tag :url => query_index_path, :loading => "document.fire('search:start')", :complete => "document.fire('search:done')" do
+  = image_tag "logo2.png", :id => "logo"
+  = text_field_tag :query
+  = submit_tag 'Search', :id => "search-button"
+  .speedy
+    = check_box_tag :speedy, "1", true
+    = label_tag :speedy, "Enable blazing fast results!!!1!!11"
+#statistics Please enter a query above
+#results
+#ajax-load{:style => "display:none"}= image_tag("ajax-loader.gif")
+#footer
+  Informatics 141 | 
+  Nathan Esquenazi | 
+  Thomas Shafer | 
+  Assignment 7

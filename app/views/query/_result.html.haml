@@ -1,0 +1,11 @@
+.result
+  = place_wiki_title(result)
+  .details
+    %span.docid
+      Docid:
+      = result.docid
+    %span.score
+      Score:
+      = result.score_value
+    .counts= place_term_counts(result)
+    .url= result.link
