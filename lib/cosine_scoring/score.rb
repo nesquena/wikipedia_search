@@ -67,7 +67,7 @@ module CosineScoring
     # constructs a document object with a relevance cosing score based on a docid, terms and query vector
     def self.construct_document(docid)
       d1 = DocumentFragment.new(docid, @terms)
-      d1.score_value = score(@query_vector, d1)
+      d1.score_value = score(@query_doc, d1)
       return d1
     end
 
@@ -76,8 +76,8 @@ module CosineScoring
     # |d| = d1^2+d2^2)^1/2
     #|d| = sqrt(d dotted d)
     def self.score(query_doc, frag_doc)
-      query_doc.terms.inject(0.0) do |dot_product, term|
-        dot_product += (query_doc.tfidf(term.word) * frag_doc.tfidf(term.word))
+      frag_doc.terms.inject(0.0) do |dot_product, term|
+        dot_product + (query_doc.tfidf(term.word) * frag_doc.tfidf(term.word))
       end 
     end
   end
