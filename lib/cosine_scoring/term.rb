@@ -10,7 +10,8 @@ module CosineScoring
     def self.from_db(word)
       Profile.measure('fetch => tokyo') { @record = TERMS_HASH[word] }
       Rails.logger.info @record['tf']
-      if @record and @record['tf'].to_i < (RECORD_NUMBER / 10)
+      threshold = (RECORD_NUMBER / 10)
+      if @record and (threshold == 1 || @record['tf'].to_i < threshold)
         Profile.measure('fetch => yaml') { @doc_hash = eval(@record['doc_hash']) }
         @df = @record['df'].to_i
       else

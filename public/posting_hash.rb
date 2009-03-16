@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rufus/tokyo'
 require 'activesupport'
 
-NUM_FILES = 500000
+NUM_FILES = 10
 
 db = Rufus::Tokyo::Table.new("posting_#{NUM_FILES}.tct")
 
