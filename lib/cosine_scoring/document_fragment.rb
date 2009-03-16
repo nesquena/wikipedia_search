@@ -43,19 +43,6 @@ module CosineScoring
       Result.new(url, docid, score_value, term_count_hash)
     end
 
-    # returns tf*idf for a specified term
-    def tfidf(term)
-      term = to_term_record(term)
-      tf(term) * term.idf
-    end
-
-    # 1+ln(termcount)
-    def tf(term)
-      term = to_term_record(term)
-      return 0 if (tc = term.count_in_document(@docid)) == 0
-      1 + Math.log(tc)
-    end
-
     # defines comparator for sorting documents
     def <=>(doc2)
       doc2.score_value <=> self.score_value
@@ -84,6 +71,19 @@ module CosineScoring
     def to_term_record(term_or_word)
       return term_or_word if term_or_word.respond_to?(:word)
       return @term_hash[term_or_word]
+    end
+    
+    # returns tf*idf for a specified term
+    def tfidf(term)
+      term = to_term_record(term)
+      tf(term) * term.idf
+    end
+
+    # 1+ln(termcount)
+    def tf(term)
+      term = to_term_record(term)
+      return 0 if (tc = term.count_in_document(@docid)) == 0
+      1 + Math.log(tc)
     end
 
   end
