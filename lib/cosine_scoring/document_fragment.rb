@@ -1,6 +1,13 @@
 module CosineScoring
   class DocumentFragment
     
+    # create a document to compare against a query
+    def self.construct(docid, terms, query_doc)
+      d1 = DocumentFragment.new(docid, terms)
+      d1.score_value = d1.calculate_similarity(query_doc)
+      return d1
+    end
+    
     # assumption each word is unique
     def self.from_query(query_string)
       keywords = query_string.downcase.squeeze(" ").split(/\s/)
@@ -52,6 +59,13 @@ module CosineScoring
     # defines comparator for sorting documents
     def <=>(doc2)
       doc2.score_value <=> self.score_value
+    end
+    
+    # calculates similarity score between two document fragments (integer value)
+    def calculate_similarity(other_doc)
+      self.terms.inject(0.0) do |dot_product, term|
+        dot_product + (self.tfidf(term.word) * other_doc.tfidf(term.word))
+      end
     end
     
     protected 

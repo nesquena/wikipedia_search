@@ -51,34 +51,10 @@ module CosineScoring
 
     # creates document fragments and calculates scores for all documents which contain a term
     # return { docid => Document, docid => Document }
-    #
-    # NOTE: Slowness occurs starting here!
-    # == search with query 'external' ==
-    # create doc with entire scoring process              ~ 9.5 seconds
-    # create doc w/o invoking score but with d&q scoring  ~ 8.2 seconds
-    # create doc w/o d&q scoring but with invoking score  ~ 5.2 seconds
-    # create doc w/o invoking score or d&q scoring        ~ 3.6 seconds
     def self.construct_documents_for(term)
       Profile.measure("scoring => #{term.word} (#{term.docids.length} docs)") do
-        term.docids.each { |docid| @document_hash[docid] ||= construct_document(docid)  }
+        term.docids.each { |docid| @document_hash[docid] ||= DocumentFragment.construct(docid, @terms, @query_doc)}
       end
-    end
-
-    # constructs a document object with a relevance cosing score based on a docid, terms and query vector
-    def self.construct_document(docid)
-      d1 = DocumentFragment.new(docid, @terms)
-      d1.score_value = score(@query_doc, d1)
-      return d1
-    end
-
-    # returns the score of the query_vector (alphas) dot producted with document_vector (betas)
-    # (q dotted d) / |d|
-    # |d| = d1^2+d2^2)^1/2
-    #|d| = sqrt(d dotted d)
-    def self.score(query_doc, frag_doc)
-      frag_doc.terms.inject(0.0) do |dot_product, term|
-        dot_product + (query_doc.tfidf(term.word) * frag_doc.tfidf(term.word))
-      end 
     end
   end
 end
