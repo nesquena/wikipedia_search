@@ -8,7 +8,7 @@ class QueryController < ApplicationController
   def create
     @query, @speedy = params[:query], params[:speedy]
     @time_to_complete = Profile.measure(:overall) do
-      @results, @count, @fetching_time, @scoring_time, @sorting_time = CosineScoring::Score.search_results(@query, @speedy)
+      @results, @count, @fetching_time, @scoring_time, @sorting_time = QueryHandler::Manager.search_results(@query, @speedy)
     end
     
     respond_to do |wants|

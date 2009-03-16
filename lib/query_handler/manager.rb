@@ -10,8 +10,8 @@
 
 =end
 
-module CosineScoring
-  class Score
+module QueryHandler
+  class Manager
     # Returns result information for a particular query using results from search_documents
     # Returns [Document, Document, Document] up to 10 results
     def self.search_results(query_string, use_cloud)
@@ -22,7 +22,7 @@ module CosineScoring
 
     protected
 
-    # Performs a search based on a query, sorting documents by cosine score
+    # Performs a search based on a query, sorting documents by similarity score
     # Returns [Document, Document, Document]
     def self.search_documents(query_string, use_cloud)
       query_doc = DocumentFragment.from_query(query_string) # step 1
@@ -45,7 +45,7 @@ module CosineScoring
     # return { docid => Document, docid => Document }
     def self.collect_documents(terms, query_doc)
       @document_hash, @query_doc = Hash.new, query_doc
-      @terms.each { |term| construct_documents_for(term) }
+      terms.each { |term| construct_documents_for(term) }
       @document_hash.values
     end
 

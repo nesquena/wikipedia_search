@@ -1,4 +1,4 @@
-module CosineScoring
+module QueryHandler
   class DocumentFragment
     
     # create a document to compare against a query

@@ -1,4 +1,4 @@
-module CosineScoring
+module QueryHandler
   class Term
     
     def self.from_source(word, use_cloud)

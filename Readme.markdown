@@ -12,7 +12,7 @@ a professor named Don Patterson.
 The final assignment for the class was to create a system for searching wikipedia that used a
 postings list and a reverse lookup table of urls. The basic assignment was to create a
 Java program which, given a query, would return the best results using a modified version
-of the standard cosine ranking algorithm for determining a similarity score. 
+of the standard ranking algorithm for determining a similarity score. 
 More information on the assignment can be found here: 
 
 [Informatics 141 Assignment 7](http://www.ics.uci.edu/~djp3/classes/2009_01_02_INF141/Assignments/Assignment07.html)
@@ -26,7 +26,7 @@ The source code for our rails application is hosted here. Check out the followin
 
  * `app/controllers/query_controller.rb`
  * `app/views/query/*`
- * `lib/cosine_score/*`
+ * `lib/query_handler/*`
     
 Note that the actual 500,000 postings list data has been ommitted making this far from actually useable.
 The data source present is a much smaller sampling of data (a postings list for about 10 pages of wikipedia)
@@ -36,7 +36,7 @@ Details
 -------
 
 The Informatics 141 class had several assignments which were intended to teach us how to create a search engine using
-a crawler, a posting list, and cosine score ranked retrieval algorithm. 
+a crawler, a posting list, and similarity score ranked retrieval algorithm. 
 
 In previous assignments, we had built an entire postings list for a large portion of Wikipedia (500,000 article).
 A postings list, for those who aren't up on the fancy information retrieval lingo is a standardized method of
@@ -100,5 +100,5 @@ is simple:
     db['elephant'] # => { 'tf' => 11, 'df' => 4, 'doc_hash' => "{3=>6, 4=>1, 5=>1, 7=>3}" }
     db.close
 
-Using this system, we can easily access the data needed to perform cosine scoring on a query and
+Using this system, we can easily access the data needed to perform similarity scoring on a query and
 return the relevant matching documents.

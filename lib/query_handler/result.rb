@@ -1,4 +1,4 @@
-module CosineScoring
+module QueryHandler
   class Result
 
     attr_reader :title, :docid, :score_value, :term_count_hash
