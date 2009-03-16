@@ -1,15 +1,3 @@
-=begin
-
-  step 1, parse query_string into array (separated by space) of term_objects 
-  step 2, grab term from posting_list (faked now) and create term_objects
-  step 3, grab all docids based on term information @terms.collect(&:doc_ids).flatten.uniq
-  step 4, create document classes by iterating through docids and constructing doc objects
-  step 5, create score_vectors on all documents
-  step 6, go through each document and store the score
-  step 7, sort these similarity scores (sorting documents)
-
-=end
-
 module QueryHandler
   class Manager
     # Returns result information for a particular query using results from search_documents
@@ -25,10 +13,10 @@ module QueryHandler
     # Performs a search based on a query, sorting documents by similarity score
     # Returns [Document, Document, Document]
     def self.search_documents(query_string, use_cloud)
-      query_doc = DocumentFragment.from_query(query_string) # step 1
-      fetching_time = Profile.measure(:fetch) { @terms = posting_terms_for(query_doc, use_cloud) } # step 2
-      score_time    = Profile.measure(:score) { @documents_array = collect_documents(@terms, query_doc) } # step 3 and 4
-      sort_time     = Profile.measure(:sort)  { @documents_array.sort! } # step 5, 6, and 7
+      query_doc = DocumentFragment.from_query(query_string) 
+      fetching_time = Profile.measure(:fetch) { @terms = posting_terms_for(query_doc, use_cloud) } 
+      score_time    = Profile.measure(:score) { @documents_array = collect_documents(@terms, query_doc) } 
+      sort_time     = Profile.measure(:sort)  { @documents_array.sort! }
       return @documents_array, fetching_time, score_time, sort_time
     end
 
