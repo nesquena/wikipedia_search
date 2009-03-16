@@ -5,7 +5,7 @@ module QueryHandler
     def self.search_results(query_string, use_cloud, total_results=10)
       query_doc = DocumentFragment.from_query(query_string) 
       fetching_time = Profile.measure(:fetch) { @terms = posting_terms_for(query_doc, use_cloud) } 
-      score_time    = Profile.measure(:score) { @documents = collect_documents(@terms, query_doc) } 
+      score_time    = Profile.measure(:score) { @documents = build_documents(@terms, query_doc) } 
       sort_time     = Profile.measure(:sort)  { @documents.sort! }
       results = @documents[0...10].collect { |document| document.to_result }
       return results, @documents.size, fetching_time, score_time, sort_time
@@ -22,7 +22,7 @@ module QueryHandler
     # returns the document fragments for every document which contains a term from the query
     # removes duplicate docids which exist in multiple terms
     # return { docid => Document, docid => Document }
-    def self.collect_documents(terms, query_doc)
+    def self.build_documents(terms, query_doc)
       @document_hash, @query_doc = Hash.new, query_doc
       terms.each { |term| construct_documents_for(term) }
       @document_hash.values
