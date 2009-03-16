@@ -27,7 +27,7 @@ module CosineScoring
     def self.search_documents(query_string, use_cloud)
       query_doc = DocumentFragment.from_query(query_string) # step 1
       fetching_time = Profile.measure(:fetch) { @terms = posting_terms_for(query_doc, use_cloud) } # step 2
-      score_time    = Profile.measure(:score) { @documents_array = collect_documents(@terms, query_doc.tfidf_hash) } # step 3 and 4
+      score_time    = Profile.measure(:score) { @documents_array = collect_documents(@terms, query_doc) } # step 3 and 4
       sort_time     = Profile.measure(:sort)  { @documents_array.sort! } # step 5, 6, and 7
       return @documents_array, fetching_time, score_time, sort_time
     end
@@ -43,8 +43,8 @@ module CosineScoring
     # returns the document fragments for every document which contains a term from the query
     # removes duplicate docids which exist in multiple terms
     # return { docid => Document, docid => Document }
-    def self.collect_documents(terms, query_vector)
-      @document_hash, @query_vector = Hash.new, query_vector
+    def self.collect_documents(terms, query_doc)
+      @document_hash, @query_doc = Hash.new, query_doc
       @terms.each { |term| construct_documents_for(term) }
       @document_hash.values
     end
@@ -67,7 +67,7 @@ module CosineScoring
     # constructs a document object with a relevance cosing score based on a docid, terms and query vector
     def self.construct_document(docid)
       d1 = DocumentFragment.new(docid, @terms)
-      d1.score_value = score(@query_vector, d1.tfidf_hash)
+      d1.score_value = score(@query_vector, d1)
       return d1
     end
 
@@ -75,16 +75,10 @@ module CosineScoring
     # (q dotted d) / |d|
     # |d| = d1^2+d2^2)^1/2
     #|d| = sqrt(d dotted d)
-    def self.score(query_tfidf_hash, document_tfidf_hash)
-      document_magnitude = 0.0
-      query_magnitude = 0.0
-      dot_product = 0.0
-      query_tfidf_hash.each do |word, tfidf|
-        # document_magnitude += (document_tfidf_hash[word] * document_tfidf_hash[word])
-        # query_magnitude += (query_tfidf_hash[word] * query_tfidf_hash[word])
-        dot_product += (query_tfidf_hash[word] * document_tfidf_hash[word])
+    def self.score(query_doc, frag_doc)
+      query_doc.terms.inject(0.0) do |dot_product, term|
+        dot_product += (query_doc.tfidf(term.word) * frag_doc.tfidf(term.word))
       end 
-      dot_product # / (Math.sqrt(query_magnitude) * Math.sqrt(document_magnitude))
     end
   end
 end

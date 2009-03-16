@@ -8,17 +8,12 @@ module CosineScoring
       DocumentFragment.new("q", keywords)
     end
 
-    attr_reader :docid
+    attr_reader :docid, :terms
     attr_accessor :score_value
 
     # term_list is an array of terms objects.
     def initialize(docid, terms_list)
       @docid, @terms = docid, terms_list
-    end
-
-    # hash of tfidfs for each term in document { word => tfidf, word => tfidf }
-    def tfidf_hash
-      @terms.inject(Hash.new(0)) { |hash, term| hash[term.word] = tfidf(term); hash }
     end
 
     # { word => tc, word => tc }
