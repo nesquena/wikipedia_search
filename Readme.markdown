@@ -54,9 +54,9 @@ up and stored in a large hash of key-pair values as such:
     
 For example, the line above means the following:
 
- * The word 'elephant' appeared 6 times over the entire corpus.
+ * The word 'elephant' appeared 11 times over the entire corpus.
  * The word 'elephant' appeared in 4 distinct documents in the corpus. 
- * In document 3, the word 'elephant' appeared 11 times
+ * In document 3, the word 'elephant' appeared 6 times
  * In document 4, the word 'elephant' appeared 1 time
  * In document 5, the word 'elephant' appeared 1 time
  * In document 7, the word 'elephant' appeared 3 times
